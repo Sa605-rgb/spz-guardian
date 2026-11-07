@@ -4,15 +4,27 @@
 
 Internal operations product for a UK healthcare trial (SMART Patient Zone). Built end-to-end: React dashboard, FastAPI backend, live ward-event feed, and password-gated deployment.
 
----
+## Screenshots
 
-## 项目简介
+<p align="center">
+  <img src="docs/screenshots/testing.png" alt="Testing Dashboard" width="900" />
+</p>
+<p align="center"><em>Testing Dashboard — WHO Moment 1 events, stats, snapshots, and shared delete</em></p>
 
-SPZ Guardian 是一套医院病区运营仪表盘。系统将现场检测会话映射到 **WHO Moment 1** 手卫生场景（M1-01～M1-06），并在测试、手卫生、环境卫生三个模块中共用同一事件列表。支持实时病区数据、本地演示回退、事件删除同步、以及按病区 / 床位 / SPZ 的质量缺口分析。
+<p align="center">
+  <img src="docs/screenshots/hand-hygiene.png" alt="Hand Hygiene Dashboard" width="900" />
+</p>
+<p align="center"><em>Hand Hygiene — missed opportunity vs quality shortfall by ward, bay, and SPZ</em></p>
 
-技术栈：React 19、Vite、Tailwind CSS、FastAPI、Pytest。
+<p align="center">
+  <img src="docs/screenshots/environmental.png" alt="Environmental Dashboard" width="900" />
+</p>
+<p align="center"><em>Environmental — shared devices, high-touch surfaces, residual risk</em></p>
 
----
+<p align="center">
+  <img src="docs/screenshots/heatmap.png" alt="Ward Compliance Heatmap" width="900" />
+</p>
+<p align="center"><em>Ward compliance heatmap</em></p>
 
 ## Problem
 

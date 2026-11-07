@@ -5,6 +5,7 @@ from app.config import settings
 from app.routers import (
     alerts,
     auth,
+    classify,
     devices,
     environmental,
     hand_hygiene,
@@ -36,6 +37,7 @@ prefix = settings.api_prefix
 
 app.include_router(auth.router, prefix=f"{prefix}/auth", tags=["auth"])
 app.include_router(auth.facility_router, prefix=f"{prefix}/facilities", tags=["facilities"])
+app.include_router(classify.router, prefix=f"{prefix}/classify", tags=["classify"])
 app.include_router(testing.router, prefix=f"{prefix}/testing", tags=["testing"])
 app.include_router(hand_hygiene.router, prefix=f"{prefix}/hand-hygiene", tags=["hand-hygiene"])
 app.include_router(environmental.router, prefix=f"{prefix}/environmental", tags=["environmental"])

@@ -1,0 +1,4 @@
+# Language stats: Python classifier is the core. Dashboard UI is the client.
+frontend/** linguist-vendored
+docs/** linguist-documentation
+*.mp4 linguist-vendored

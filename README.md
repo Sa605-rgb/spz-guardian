@@ -1,6 +1,6 @@
 # SPZ Guardian
 
-**A full-stack hospital ward dashboard for hand-hygiene, environmental hygiene, and WHO Moment 1 testing.**
+**Python WHO Moment 1 classifier plus a hospital ward dashboard for hand hygiene, environmental hygiene, and testing.**
 
 Internal operations product for a UK healthcare trial (SMART Patient Zone). Built end-to-end: React dashboard, FastAPI backend, live ward-event feed, and password-gated deployment.
 
@@ -49,11 +49,24 @@ SPZ Guardian turns session JSON (`started_at`, location, role, outcome cues) int
 | **Shared delete** | One hide/delete path across Testing, HH, and Environmental |
 | **POC scripts** | Workbook order M1-01 … M1-06; unmatched runs go to **Not recognised** |
 
+## WHO Moment 1 classifier (Python)
+
+The core of the project is a **Python feature-based classifier** (`backend/app/classify.py`).
+
+It reads session features — `touch_count`, dispenser presses, rub time, dwell — and maps them onto the frozen POC scripts **M1-01 … M1-06**. Anything that does not match is **Not recognised**, never silently labelled non-opportunity.
+
+```bash
+cd backend
+pytest tests/test_classify.py
+```
+
+`POST /v1/classify` returns `{ features, result }` for a single session.
+
 ## Tech stack
 
-**Frontend:** React 19, Vite 8, React Router 7, Tailwind CSS, Lucide, Recharts  
-**Backend:** FastAPI, Pydantic Settings, Uvicorn, Pytest  
-**Integration:** CORS-safe live origin, Vite dev proxy, static IONOS build (`VITE_BASE_PATH`)
+**Python 3.12:** FastAPI, Pydantic, Pytest, WHO Moment 1 classifier  
+**Dashboard UI:** React 19, Vite 8, Tailwind CSS, Recharts  
+**Integration:** live ward `/events` + `/results`, Vite proxy, static IONOS build
 
 ## Architecture
 
@@ -122,7 +135,7 @@ Do not commit `.env` or `.env.local`.
 
 ## API (prefix `/v1`)
 
-Auth, testing events, hand hygiene, environmental, heatmap, patient care/safety, reports, alerts, devices, users, settings, ingest.
+`POST /v1/classify` (session → M1 code), plus testing events, hand hygiene, environmental, heatmap, patient care/safety, reports, alerts, devices, users, settings, ingest.
 
 ## Role
 

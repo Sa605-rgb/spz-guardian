@@ -1,0 +1,121 @@
+# SPZ Guardian
+
+**A full-stack hospital ward dashboard for hand-hygiene, environmental hygiene, and WHO Moment 1 testing.**
+
+Internal operations product for a UK healthcare trial (SMART Patient Zone). Built end-to-end: React dashboard, FastAPI backend, live ward-event feed, and password-gated deployment.
+
+---
+
+## 项目简介
+
+SPZ Guardian 是一套医院病区运营仪表盘。系统将现场检测会话映射到 **WHO Moment 1** 手卫生场景（M1-01～M1-06），并在测试、手卫生、环境卫生三个模块中共用同一事件列表。支持实时病区数据、本地演示回退、事件删除同步、以及按病区 / 床位 / SPZ 的质量缺口分析。
+
+技术栈：React 19、Vite、Tailwind CSS、FastAPI、Pytest。
+
+---
+
+## Problem
+
+Ward teams need one screen that answers:
+
+- Did this visit create a **Moment 1 opportunity**?
+- Was it **compliant**, **non-compliant**, or **not an opportunity**?
+- If it failed, **why** — missed opportunity vs quality shortfall (dose / coverage / contact time)?
+- Does deleting an event on Testing also update Hand Hygiene and Environmental?
+
+SPZ Guardian turns session JSON (`started_at`, location, role, outcome cues) into reporting the ward can actually use.
+
+## Features
+
+| Area | What it does |
+| --- | --- |
+| **Testing Dashboard** | Live or demo events, WHO Moment 1 buckets, snapshots, Images / Go up / Delete |
+| **Hand Hygiene** | Missed opportunity vs quality shortfall by ward, bay, and SPZ; how to comply |
+| **Environmental** | Shared-device, high-touch, reusable vs disposable, residual-risk markers |
+| **Heatmap / care / safety** | Ward layout, patient-care tasks, safety and device views |
+| **Live feed** | Polls ward `/events` + `/results`; falls back to local demo if the tunnel is down |
+| **Shared delete** | One hide/delete path across Testing, HH, and Environmental |
+| **POC scripts** | Workbook order M1-01 … M1-06; unmatched runs go to **Not recognised** |
+
+## Tech stack
+
+**Frontend:** React 19, Vite 8, React Router 7, Tailwind CSS, Lucide, Recharts  
+**Backend:** FastAPI, Pydantic Settings, Uvicorn, Pytest  
+**Integration:** CORS-safe live origin, Vite dev proxy, static IONOS build (`VITE_BASE_PATH`)
+
+## Architecture
+
+```text
+Ward camera / detection PC
+        │  Cloudflare tunnel
+        ▼
+https://www.spzguardian-dash.com  →  /events  /results
+        │
+        ▼
+React dashboard (password gate)
+  Testing  │  Hand Hygiene  │  Environmental
+        │
+        └── shared event list + hide/delete store
+
+FastAPI  /v1/*   (auth, testing, HH, env, heatmap, ingest, reports)
+```
+
+Live sessions are classified from outcome fields (touch, interaction, rub time, dwell) into Moment 1 scripts. Display codes stay `M1-xx`; unique keys are `sessionId` so one delete cannot hide a sibling row.
+
+## Repository layout
+
+```text
+spz-guardian/
+├── frontend/     Vite + React dashboard
+│   └── src/pages, src/data, src/components
+└── backend/      FastAPI app
+    ├── app/routers, app/data
+    └── tests
+```
+
+## Run locally
+
+### Frontend
+
+```bash
+cd frontend
+cp .env.example .env.local
+npm install
+npm run dev
+```
+
+Open [http://localhost:5173](http://localhost:5173). Set `VITE_DASHBOARD_PASSWORD` and `VITE_LIVE_ORIGIN` in `.env.local`.
+
+### Backend
+
+```bash
+cd backend
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+cp .env.example .env
+uvicorn app.main:app --reload --app-dir .
+```
+
+Health check: [http://localhost:8000/health](http://localhost:8000/health)
+
+### Tests
+
+```bash
+cd frontend && npm test
+cd backend && pytest
+```
+
+Do not commit `.env` or `.env.local`.
+
+## API (prefix `/v1`)
+
+Auth, testing events, hand hygiene, environmental, heatmap, patient care/safety, reports, alerts, devices, users, settings, ingest.
+
+## Role
+
+Designed, implemented, and iterated the dashboard as a solo full-stack build: UI, live mapping, WHO classification, reporting, and FastAPI surface — then deployed the static frontend for ward review.
+
+## License
+
+Source is published for academic review. Product name and trial context belong to the commissioning healthcare programme.

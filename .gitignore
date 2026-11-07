@@ -1,0 +1,18 @@
+# secrets
+.env
+.env.local
+*.local
+
+# deps / build
+node_modules/
+.venv/
+dist/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# editor / OS
+.DS_Store
+.idea/
+.vscode/
+*.log

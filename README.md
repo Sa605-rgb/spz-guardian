@@ -51,21 +51,24 @@ SPZ Guardian turns session JSON (`started_at`, location, role, outcome cues) int
 
 ## WHO Moment 1 classifier (Python)
 
-The core of the project is a **Python feature-based classifier** (`backend/app/classify.py`).
+Two layers:
 
-It reads session features — `touch_count`, dispenser presses, rub time, dwell — and maps them onto the frozen POC scripts **M1-01 … M1-06**. Anything that does not match is **Not recognised**, never silently labelled non-opportunity.
+1. **Rules** (`backend/app/classify.py`) — WHO Moment 1 protocol. Features: touch count, dispenser presses, rub seconds, dwell. Output: **M1-01 … M1-06** or **Not recognised**.
+2. **Sklearn Decision Tree** (`backend/app/ml_model.py`, `backend/models/moment1_tree.joblib`) — supervised baseline on protocol-labeled sessions (held-out accuracy 1.0 on that synthetic split; it recovered the rule set). Feature importance: dispenser presses, then rub time, then touch.
+
+The React dashboard is still in `frontend/`. It was not removed.
 
 ```bash
 cd backend
-pytest tests/test_classify.py
+pytest tests/test_classify.py tests/test_ml_model.py
 ```
 
-`POST /v1/classify` returns `{ features, result }` for a single session.
+`POST /v1/classify` returns `{ features, rules, model }`.
 
 ## Tech stack
 
-**Python 3.12:** FastAPI, Pydantic, Pytest, WHO Moment 1 classifier  
-**Dashboard UI:** React 19, Vite 8, Tailwind CSS, Recharts  
+**Python 3.12:** FastAPI, scikit-learn Decision Tree, joblib, Pytest  
+**Dashboard UI:** React 19, Vite 8, Tailwind CSS, Recharts (still in this repo)  
 **Integration:** live ward `/events` + `/results`, Vite proxy, static IONOS build
 
 ## Architecture

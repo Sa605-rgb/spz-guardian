@@ -1,0 +1,77 @@
+{
+  "accuracy": 1.0,
+  "n_train": 420,
+  "n_test": 140,
+  "labels": [
+    "M1-01",
+    "M1-02",
+    "M1-03",
+    "M1-04",
+    "M1-05",
+    "M1-06",
+    "NR"
+  ],
+  "feature_importance": {
+    "touches": 0.16666666666666666,
+    "interactions": 0.5,
+    "rub": 0.3333333333333333,
+    "dwell": 0.0
+  },
+  "report": {
+    "M1-01": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 20.0
+    },
+    "M1-02": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 20.0
+    },
+    "M1-03": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 20.0
+    },
+    "M1-04": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 20.0
+    },
+    "M1-05": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 20.0
+    },
+    "M1-06": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 20.0
+    },
+    "NR": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 20.0
+    },
+    "accuracy": 1.0,
+    "macro avg": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 140.0
+    },
+    "weighted avg": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 140.0
+    }
+  }
+}

@@ -2,6 +2,7 @@ from fastapi import APIRouter
 from pydantic import BaseModel, Field
 
 from app.classify import classify_session, extract_features
+from app.ml_model import predict_session
 
 router = APIRouter()
 
@@ -24,5 +25,6 @@ def classify(body: SessionIn):
     session = body.model_dump()
     return {
         "features": extract_features(session),
-        "result": classify_session(session),
+        "rules": classify_session(session),
+        "model": predict_session(session),
     }

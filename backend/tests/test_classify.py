@@ -61,5 +61,6 @@ def test_classify_endpoint(client):
     )
     assert res.status_code == 200
     body = res.json()
-    assert body["result"]["code"] == "M1-06"
+    assert body["rules"]["code"] == "M1-06"
+    assert body["model"]["code"] == "M1-06"
     assert body["features"]["interactions"] == 2
